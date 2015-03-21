@@ -1,0 +1,597 @@
+
+<div class="reveal" >
+<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+	<section>
+		<h1>Akka Streams</h1>
+		<h3 class="fragment" >Présentation au <span id="jean">JHFC Lyon</span></h3> 
+		<div class="fragment">
+			<script type="text/javascript">
+				var animator = {};
+				animator.show = function() {
+					d = document.getElementById("jean");
+					d.innerHTML = "SLUG";
+				};	
+				animator.hide = function() {
+					d = document.getElementById("jean");
+					d.innerHTML = "JHFC Lyon";
+				};
+				animator;
+			</script>	
+        </div>
+	</section>	
+
+	<section>
+		<h1>whois</h1>
+		<h3>frédéric Masion</h3> 
+		<p>github : fmasion</p> 
+		<p>f.masion@kreactive.com</p> 
+	</section>	
+
+	<section>
+		<h1>Agenda</h1>
+		<ul>
+			<li>C'est quoi un stream ?</li> 
+			<li>reactives-streams.org</li> 
+			<li>Akka streams</li>	
+		</ul> 
+	</section>	
+
+	<section>
+		<h1>WTF streams ?</h1>
+		<div class="fragment">
+			<p>Wikipedia (en) dit : </p>
+			<blockquote>
+				sequence of data elements made available over time
+			</blockquote class="fragment">
+			<div class="fragment">
+				<p>"moi" je dit : </p>
+				<blockquote>
+					c'est une sequence d'informations
+					<ul>
+						<li>qui arrivent dans le temps</li>
+						<li>ordonnées (généralement)</li>
+						<li>potentiellement infinie</li>
+					</ul>
+				</blockquote>
+			</div>
+		</div>
+	</section>	
+
+	<section>
+		<h1>WTF streams ?</h1>
+		<p>En scala y en a plein :-(</p> 
+		<ul>
+			<li>scala.collection.immutable.Stream</li> 
+			<li>org.scalaz.stream</li>	
+			<li>play.api.libs.iteratee</li>
+			<li>reactive extention (scala.rx, rx-scala, RxJava...)</li>	
+			<li>org.apache.spark</li>
+			<li>Plein de patterns/paradigmes pouvant les gérer</li>
+			 <ul>
+				<li>Listener, Observer, Observable, Iteratee, Acteurs....</li>
+			</ul>
+		</ul>
+	</section>	
+
+	<section>
+		<h2>Les Streams sont partout</h2>
+		<p>(Si on veut bien les voir)</p> 
+		<ul>
+			<li>IOs en général (déscripteurs de fichiers, sockets...)</li>
+			<li>Timers</li>
+			<li>Evaluation récursive Lazy</li>
+			<li>Actions utilisateurs (Boutons, Inputs...)</li>
+			<li>...</li>
+		</ul>
+		<blockquote>vous êtes familier avec les pipes unix</blockquote>
+	</section>	
+
+	<section>
+		<h2>Deux (grands) types de fonctionnement</h2>
+		<ul>
+			<li>Push</li>
+			<li>Pull</li>
+		</ul>
+	</section>	
+
+	<section>
+		<h2>Push</h2>
+		<p>Pousse les informations aussi vite qu'elles arrivent</p>
+		<svg id="push" width="100%" height="100%" viewBox="0 0 960 300">
+      		<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-push"></use>
+    	</svg>
+	</section>	
+
+	<section>
+		<h2>Push</h2>
+		<ul>
+			<li>Idéal si Publisher plus lent que Subscriber</li>
+			<li>Sinon risque d'OutOfMemory</li>
+			<li>Autres stratégies</li>
+			<ul>
+				<li>Discard message</li>
+				<li>NACK</li>
+				<li>Persiter la queue</li>
+				<li>...</li>
+			</ul>	
+		</ul>
+	</section>	
+
+	<section>
+		<h2>Pull</h2>
+		<p>Demande un élément à la fois</p>
+		<svg id="pull" width="100%" height="100%" viewBox="0 0 960 300">
+      		<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-pull"></use>
+    	</svg>
+	</section>	
+
+	<section>
+		<h2>Pull</h2>
+		<ul>
+			<li>Pas de risque d'OutOfMemory</li>
+			<li>Sous utilisation des ressources</li>
+			<li>Efficace pour taitements couteux</li>
+		</ul>
+	</section>	
+
+	<section>
+		<h2>La Solution :</h2>
+		<div class="fragment">
+			<h2>Le dynamic push-pull</h2>
+			<img class="fragment" src="images/wat.gif">
+		</div>
+	</section>	
+
+	<section>
+		<h2>Dynamic Push - Pull</h2>
+		<p>Demande un packet sur low watermark</p>
+		<p>Pousse les informations aussi vite qu'elles arrivent <br>(dans la limite du nombre de demandes)</p>
+		<svg id="pushpull" width="100%" height="100%" viewBox="0 0 960 300">
+      		<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-pushpull"></use>
+    	</svg>
+	</section>	
+
+	<section>
+		<h2>Dynamic Push - Pull</h2>
+		<ul>
+			<li>Presque aussi efficace que le push</li>
+			<li>Gère le <em>back pressure</em> comme le pull</li>
+			<li>Tunable par le buffer size</li>
+			<ul>
+				<li>Si n = 1 ?</li>
+				<li>Si n = Long.MAX_VALUE ?</li>
+			</ul>	
+		</ul>
+	</section>	
+
+	<section>
+		<h2>reactive-streams.org</h2>
+		<blockquote>
+			Reactive Streams is an initiative to provide a standard for asynchronous stream processing with non-blocking <em style="color:crimson">back pressure</em> on the JVM.
+		</blockquote>
+		<p>Spécification d'interopérabilité</p>
+		<blockquote style="color:crimson">Le back pressure n'a d'intéret QUE si réalisé sur toute la chaine</blockquote>
+	</section>	
+
+	<section>
+		<h2>reactive-streams.org</h2>
+		<p>Seulement 4 interfaces</p>
+		<ul>
+			<li>Publisher</li>
+			<li>Subscriber</li>
+			<li>Subscription</li>
+			<li>Processor</li>
+		</ul>	
+	</section>	
+
+	<section>
+		<h2>reactive-streams.org</h2>
+		<p>Et une MECHANTE EQUIPE</p>
+			<table style="font-size">
+				<tr>
+					<td> 
+						<small>
+						Björn Antonsson – Typesafe Inc.<br>
+						Gavin Bierman – Oracle Inc.<br>
+						Jon Brisbin – Pivotal Software Inc.<br>
+						George Campbell – Netflix, Inc<br>
+						Ben Christensen – Netflix, Inc<br>
+						Mathias Doenitz – spray.io<br>
+						Marius Eriksen – Twitter Inc.<br>
+						Tim Fox – Red Hat Inc.<br>
+						Viktor Klang – Typesafe Inc.<br> 
+						</small>
+					</td>
+					<td> 
+						<small>			
+						Dr. Roland Kuhn – Typesafe Inc.<br>
+						Doug Lea – SUNY Oswego<br>
+						Stephane Maldini – Pivotal Software Inc.<br>
+						Norman Maurer – Red Hat Inc.<br>
+						Erik Meijer – Applied Duality Inc.<br>
+						Todd Montgomery – Kaazing Corp.<br>
+						Patrik Nordwall – Typesafe Inc.<br>
+						Johannes Rudolph – spray.io<br>
+						Endre Varga – Typesafe Inc.<br>
+						</small>
+			 		</td>
+				</tr>
+			</table>
+			<p>Akka, Reactor, Rxjava, RatPack, Vert.x...</p>
+	</section>
+
+	<section>
+		<h2>reactive-streams.org</h2>
+		<p>SPI pour les implémenteurs de bibliothèques</p>
+		<h3>Pas pour les ends users</h3>
+	</section>
+
+	<section>
+		<h2>Akka Streams</h2>
+		<h4>Implémentations de la spécification reactive-streams en akka</h4>
+		
+	</section>
+
+	<section>
+		<h2>Akka Streams level 1</h2>
+		<h4> Concepts de base :</h4>
+		<ul>
+			<li>Source</li>
+			<li>Sink</li>
+			<li>Flow</li>
+			<li>RunnableFlow</li>
+			<li>Materializer</li>
+		</ul>	
+	</section>	
+
+	<section>
+	<h2>Back to code</h2>
+<div>
+    <div>
+        <pre class="scala">
+            <code style="min-width: 800px; min-height: 500px; width: 960px; height: 700px;">object Exemple1 {
+  def main(args: Array[String]): Unit = {
+    implicit val system = ActorSystem("Sys")
+    import system.dispatcher
+
+    implicit val materializer = FlowMaterializer()
+
+    val range = (1 to 10)
+
+    //Scala Stream
+    val result: Int = range.toStream.filter(_ % 2 == 0).fold(0)(_+_)
+    println(result) // =&gt; 30
+
+    //Aka Streams
+    val fResult: Future[Int] = Source(range).filter(_ % 2 == 0).fold(0)(_+_)
+    fResult.onComplete{x =&gt;
+      println(x)  // =&gt; Success(30)
+      system.shutdown()
+    }
+  }
+}</code></pre>
+    </div>
+</div>
+	</section>
+
+	<section>
+		<h2>Décomposons :</h2>
+		<div>
+		<pre class="scala">
+			<code>val fResult: Future[Int] = Source(range).filter(_ % 2 == 0).fold(0)(_+_)</code>
+		</pre>
+		</div>
+		<p> Equivaux à :</p>
+		<div>
+		<pre class="scala">
+			<code>
+    val source: Source[Int] = Source(range)
+    val sink: FoldSink[Int, Int] = Sink.fold[Int, Int](0)(_+_)
+    val flow = Flow[Int].filter(_ % 2 == 0)
+
+    val step1: Source[Int] = source via flow
+    val runnable: RunnableFlow = source via flow to sink
+    val matMap: MaterializedMap = runnable.run()
+    val fResult: Future[Int] = matMap.get(sink)
+			</code>
+		</pre>
+		</div>
+	</section>
+
+	<section>
+		<p> akka.stream.scaladsl</p>
+		<div>
+		<pre class="scala">
+			<code style="min-width: 800px; min-height: 500px; width: 960px; height: 700px;">
+trait FlowOps[+Out] extends scala.AnyRef {
+  type Repr[+O] <: akka.stream.scaladsl.FlowOps[O]
+  def map[T](f : scala.Function1[Out, T]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def mapConcat[T](f : scala.Function1[Out, scala.collection.immutable.Seq[T]]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def mapAsync[T](f : scala.Function1[Out, scala.concurrent.Future[T]]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def mapAsyncUnordered[T](f : scala.Function1[Out, scala.concurrent.Future[T]]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def filter(p : scala.Function1[Out, scala.Boolean]) : FlowOps.this.Repr[Out] = { /* compiled code */ }
+  def collect[T](pf : scala.PartialFunction[Out, T]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def grouped(n : scala.Int) : FlowOps.this.Repr[scala.collection.immutable.Seq[Out]] = { /* compiled code */ }
+  def scan[T](zero : T)(f : scala.Function2[T, Out, T]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def groupedWithin(n : scala.Int, d : scala.concurrent.duration.FiniteDuration) : FlowOps.this.Repr[Out]#Repr[scala.collection.immutable.Seq[Out]] = { /* compiled code */ }
+  def drop(n : scala.Int) : FlowOps.this.Repr[Out] = { /* compiled code */ }
+  def dropWithin(d : scala.concurrent.duration.FiniteDuration) : FlowOps.this.Repr[Out]#Repr[Out] = { /* compiled code */ }
+  def take(n : scala.Int) : FlowOps.this.Repr[Out] = { /* compiled code */ }
+  def takeWithin(d : scala.concurrent.duration.FiniteDuration) : FlowOps.this.Repr[Out]#Repr[Out] = { /* compiled code */ }
+  def conflate[S](seed : scala.Function1[Out, S])(aggregate : scala.Function2[S, Out, S]) : FlowOps.this.Repr[S] = { /* compiled code */ }
+  def expand[S, U](seed : scala.Function1[Out, S])(extrapolate : scala.Function1[S, scala.Tuple2[U, S]]) : FlowOps.this.Repr[U] = { /* compiled code */ }
+  def buffer(size : scala.Int, overflowStrategy : akka.stream.OverflowStrategy) : FlowOps.this.Repr[Out] = { /* compiled code */ }
+  def transform[T](mkStage : scala.Function0[akka.stream.stage.Stage[Out, T]]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def prefixAndTail[U >: Out](n : scala.Int) : FlowOps.this.Repr[scala.Tuple2[scala.collection.immutable.Seq[Out], akka.stream.scaladsl.Source[U]]] = { /* compiled code */ }
+  def groupBy[K, U >: Out](f : scala.Function1[Out, K]) : FlowOps.this.Repr[scala.Tuple2[K, akka.stream.scaladsl.Source[U]]] = { /* compiled code */ }
+  def splitWhen[U >: Out](p : scala.Function1[Out, scala.Boolean]) : FlowOps.this.Repr[akka.stream.scaladsl.Source[U]] = { /* compiled code */ }
+  def flatten[U](strategy : akka.stream.FlattenStrategy[Out, U]) : FlowOps.this.Repr[U] = { /* compiled code */ }
+  private[akka] def timerTransform[U](mkStage : scala.Function0[akka.stream.TimerTransformer[Out, U]]) : FlowOps.this.Repr[U] = { /* compiled code */ }
+  private[scaladsl] def withAttributes(attr : akka.stream.scaladsl.OperationAttributes) : FlowOps.this.Repr[Out]
+  private[scaladsl] def andThen[U](op : akka.stream.impl.Ast.AstNode) : FlowOps.this.Repr[U]
+}
+			</code>
+		</pre>
+		</div>
+	</section>
+
+	<section>
+		<h2>Conclusion level 1</h2>
+		<ul>
+			<li>Contrairement à Stream, Source n'est pas une monade</li>
+			<li>Source, Flow, Sink font parti d'un DSL</li>
+			<li>Le DSL crée un AST (RunnableFlow)</li>
+			<li>L'AST est Materialisé sous forme d'acteurs</li>
+			<li>L'AST peut être matérialiser plusieurs fois</li>
+			<li>l'AST pourrait être sérialisé</li>
+			<li>Configurée par les MaterializationSettings</li>
+			<li>Il est possible d'extraire la valeur finale de la Map de Matérialisation</li>
+		</ul>	
+	</section>
+
+	<section>
+		<h2>Akka Streams level 2</h2>
+		<h3> from Flow to Stage </h3>
+		<ul>
+			<li>Chaque opération </li>
+			<ul>
+				<li>map()</li>
+				<li>filter()</li>
+				<li>grouped()</li>
+				<li>...</li>
+			</ul>	
+			<li>est implémenté en "Processing Stage"</li>
+			<li>On met autant de Stage que nécéssaire entre Source et Sink</li>
+			<li>Chaque Stage sera Matérialisé par un acteur</li>
+			<li>mySource.transform(() => new MyCustomStage)</li>
+		</ul>	
+	</section>	
+
+	<section>
+		<h2>Le Stage et le backpressure</h2>
+		<h3> from Flow to Stage </h3>
+		<img src="images/stage_conceptual.png"><br>
+		<em>Pour chaque message qui entre "un message revient"</em>
+	</section>
+
+	<section>
+		<h2>Exemple simple : map()</h2>
+		<img src="images/stage_map.png"><br>
+		<div>
+		<pre class="scala">
+			<code>
+class Map[A, B](f: A => B) extends PushPullStage[A, B] {
+  override def onPush(elem: A, ctx: Context[B]): Directive =
+    ctx.push(f(elem))
+ 
+  override def onPull(ctx: Context[B]): Directive =
+    ctx.pull()
+}
+			</code>
+		</pre>
+		</div>
+	</section>
+
+	<section>
+		<h2>cardinalité != 1 pour 1 : filter()</h2>
+		<img src="images/stage_filter.png"><br>
+		<div>
+		<pre class="scala">
+			<code>
+class Filter[A](p: A => Boolean) extends PushPullStage[A, A] {
+  override def onPush(elem: A, ctx: Context[A]): Directive =
+    if (p(elem)) ctx.push(elem)
+    else ctx.pull()
+ 
+  override def onPull(ctx: Context[A]): Directive =
+    ctx.pull()
+}
+			</code>
+		</pre>
+		</div>
+	</section>
+
+	<section>
+		<h2>Je vous laisse implémenter mapConcat() ?</h2>
+		<img src="images/lama.gif"><br>
+	</section>
+
+	<section>
+		<h2>Conclusion level 2</h2>
+		<h4>Ne jamais casser la boucle de retour ! <strong>sinon dead lock</strong></h4>
+		<ul>
+			<li>Le Stage de base à implémenter est le PushPullStage</li>
+			<li>Le PushStage peut être utilisé pour les 1-1 et n-1 </li>
+			<li>StatefulStage permet d'avoir un état et l'accès à become()</li>
+			<li>D'autres implémentations de base ne sont pas encore documentées</li>
+		</ul>	
+	</section>
+
+	<section>
+		<h2>Akka Streams level 3</h2>
+		<h3> from Flow to Graph </h3>
+		<em>Les Streams en 2D</em>
+	</section>	
+
+	<section>
+		<h2>FlowGraph</h2>
+		<div>
+		<pre class="scala">
+			<code>
+val g = FlowGraph { implicit b =>
+  import FlowGraphImplicits._
+  val in = Source(1 to 10)
+  val out = Sink.ignore
+ 
+  val bcast = Broadcast[Int]
+  val merge = Merge[Int]
+ 
+  val f1, f2, f3, f4 = Flow[Int].map(_ + 10)
+ 
+  in ~> f1 ~> bcast ~> f2 ~> merge ~> f3 ~> out
+              bcast ~> f4 ~> merge
+}
+			</code>
+		</pre>
+		</div>
+		<img src="images/graph.png"><br>
+	</section>	
+
+	<section>
+		<h4>FlowGraph Fan out</strong></h4>
+		<ul>
+			<li>BroadCast => envoie le message à tous les routees</li>
+			<li>Balance => envoie le message à 1 des routees</li>
+			<li>UnZip => split les tuples sur 2 routees</li>
+			<li>FlexiRoute Logique à implémenter soi même</li>
+		</ul>	
+		<h4>FlowGraph Fan in</strong></h4>
+		<ul>
+			<li>Merge => prend aléatoirement sur chaque entrée</li>
+			<li>MergePreferred =>  1 entrée sinon les autres</li>
+			<li>UnZip => split les tuples sur 2 routees</li>
+			<li>ZipWith =>  1 element de chaque entrée (barrière)</li>
+			<li>Zip => inverse de UnZip</li>
+			<li>Concat => 1er Stream puis le 2nd...</li>
+			<li>FlexiMerge => implemente ta MergeStrategy</li>
+		</ul>	
+	</section>
+
+	<section>
+		<h2>FlowGraph Quizz </h2>
+				<div>
+		<pre class="scala">
+			<code>
+val g = FlowGraph { implicit b =>
+  import FlowGraphImplicits._
+  val in = Source(1 to 1000000)
+  val out = Sink.ignore
+ 
+  val bcast = Broadcast[Int]
+  val concat = Concat[Int]
+ 
+  val f1, f2, f3, f4 = Flow[Int].map(_ + 10)
+ 
+  in ~> f1 ~> bcast ~> f2 ~> concat ~> f3 ~> out
+              bcast ~> f4 ~> concat
+}
+			</code>
+		</pre>
+		</div>
+		<em> Ca fait quoi ?</em>
+	</section>
+
+	<section>
+		<h2>Conclusion Level 3 : FlowGraph</h2>
+		<ul>
+			<li>Par défaut pas de cycles</li>
+			<li>b.allowCycles()</li>
+			<li>Attention aux deadLocks</li>
+			<li>Tester avec un "gros" échantillion</li>
+		</ul>
+		<blockquote>Les Flows et FlowGraphs sont réutilisables</blockquote>
+		<blockquote>Ils peuvent être matérialisés plusieurs fois</blockquote>
+		<blockquote>Ils sont composables</blockquote>
+	</section>
+
+	<section>
+		<h2>Akka Streams level 4</h2>
+		<h3> Intégration </h3>
+
+		<ul>
+			<li>Les points d'integration sont les Sources et les Sinks</li>
+			<li>Avec reactives-streams</li>
+			<ul>
+				<li>Source => Publisher</li>
+				<li>Sink => Subscriber</li>
+			</ul>	
+			<li>Avec Akka</li>
+			<ul>
+				<li>Source => ActorProducer[T]</li>
+				<li>Sink => ActorSubscriber</li>
+			</ul>	
+		</ul>
+		<br>
+		<em>That's it</em>
+	</section>	
+
+
+	<section>
+		<h2>Akka Streams What's Next ? post 1.0</h2>
+		<ul>
+			<li>D'autres Materialisers</li>
+			<li>source.map(_+1).map(_*2)......map(_/Math.PI) </li>
+			<li>Une collection de Flows réutilisables</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Conclusion 1/2</h2>
+		<h3>Avantages</h3>
+		<ul>
+			<li>Back Pressure</li>
+			<li>Une API simple et élégantes</li>
+			<li>Une API Typée sur les acteurs</li>
+			<li>Akka Http => Pérénité</li>
+			<li>Flows serialisables ET réutilisables</li>
+			<li>Bientôt des collections de Flow, Source et Sink ?</li>
+			<ul>
+				<li>FileSink, S3Sink, EmailSink, PushNotificationSink..?</li>
+				<li>UTF8_Flow, JsonFlow..?</li>
+			</ul>
+			<li>API FlowGraph surpuissante !</li>
+			<ul>
+				<li>TickSource et Zip</li>
+			</ul>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Conclusion 2/2</h2>
+		<h3>Inconvénients</h3>
+		<ul>
+			<li>API jeunes 1.0M2</li>
+			<li>Donne une "fausse" impréssion de simplicité</li>
+			<li>Risques de DeadLock !</li>
+			<ul>
+				<li>Peut devenir TRES complexe</li>
+				<li>Locks difficile à tester</li>
+				<li>Pas de tolérence pour les pertes de messages</li>
+				<li>Pas de clustering sans gestion du risque</li>
+			</ul>
+			<li>Beaucoup d'indirection entre code et execution</li>
+			<ul>
+				<li>Gestion des erreurs ?</li>
+				<li>StackTrace</li>
+				<li>Locks silencieux</li>
+			</ul>
+		</ul>
+	</section>
+
+	<section>
+		<h1>Questions</h1>
+	</section>
+	
+</div>
+</div>
