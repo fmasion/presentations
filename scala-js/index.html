@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+				<title>Akka stream presentation</title>
+
+		<meta name="description" content="Akka stream presentation">
+		<meta name="author" content="Frederic Masion">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<style >
+/*********************************************
+ * More Style
+ *********************************************/
+ </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<svg style="display: none;"><symbol viewBox="0 0 960 300" id="shape-pull"><title>pull</title><desc>Created with Sketch.</desc> <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->    <g id="pull-Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="pull-pull" sketch:type="MSArtboardGroup"> <g id="pull-frontal7" sketch:type="MSLayerGroup" transform="translate(68.000000, 91.000000)" fill="#D8D8D8"> <g id="pull-Group" sketch:type="MSShapeGroup"> <ellipse id="pull-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="pull-Shape"/> </g> </g> <path d="M150,141.5 L810,141.5" id="pull-Line" stroke="#979797" stroke-width="5" stroke-linecap="square" sketch:type="MSShapeGroup"/> <path id="pull-Line-decoration-1" d="M810,141.5 C806.22,140.45 802.98,139.55 799.2,138.5 C799.2,140.6 799.2,142.4 799.2,144.5 C802.98,143.45 806.22,142.55 810,141.5 C810,141.5 810,141.5 810,141.5 Z" stroke="#979797" stroke-width="5" stroke-linecap="square"/> <path d="M820.5,182 L148.5,182" id="pull-Line" stroke="#979797" stroke-width="4" stroke-linecap="square" sketch:type="MSShapeGroup"/> <path id="pull-Line-decoration-1" d="M148.5,182 C152.28,183.05 155.52,183.95 159.3,185 C159.3,182.9 159.3,181.1 159.3,179 C155.52,180.05 152.28,180.95 148.5,182 C148.5,182 148.5,182 148.5,182 Z" stroke="#979797" stroke-width="4" stroke-linecap="square"/> <text id="pull-100-msg/s" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="825" y="265">100 msg/s</tspan> </text> <text id="pull-Capacit&#xE9;-" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="55" y="263">Capacit&#xE9; </tspan> <tspan x="55" y="289">1 msg/s</tspan> </text> <circle id="pull-Oval-10" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="621" cy="141" r="20"/> <circle id="pull-Oval-11" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="260" cy="180" r="20"/> <g id="pull-frontal7-2" sketch:type="MSLayerGroup" transform="translate(835.000000, 89.000000)" fill="#D8D8D8"> <g id="pull-Group" sketch:type="MSShapeGroup"> <ellipse id="pull-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="pull-Shape"/> </g> </g> <text id="pull-Give-me-one" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#E0E0E0"> <tspan x="205" y="221">Give me one</tspan> </text> <text id="pull-Msg" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#E0E0E0"> <tspan x="600" y="105">Msg</tspan> </text> </g> </g> </symbol><symbol viewBox="0 0 960 300" id="shape-push"><title>push</title><desc>Created with Sketch.</desc> <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->    <g id="push-Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="push-push" sketch:type="MSArtboardGroup"> <g id="push-frontal7" sketch:type="MSLayerGroup" transform="translate(68.000000, 91.000000)" fill="#D8D8D8"> <g id="push-Group" sketch:type="MSShapeGroup"> <ellipse id="push-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="push-Shape"/> </g> </g> <path d="M140,151.5 L800,151.5" id="push-Line" stroke="#979797" stroke-width="5" stroke-linecap="square" sketch:type="MSShapeGroup"/> <path id="push-Line-decoration-1" d="M800,151.5 C796.22,150.45 792.98,149.55 789.2,148.5 C789.2,150.6 789.2,152.4 789.2,154.5 C792.98,153.45 796.22,152.55 800,151.5 C800,151.5 800,151.5 800,151.5 Z" stroke="#979797" stroke-width="5" stroke-linecap="square"/> <text id="push-100-msg/s" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="43" y="266">100 msg/s</tspan> </text> <text id="push-Capacit&#xE9;-" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="875" y="261">Capacit&#xE9; </tspan> <tspan x="875" y="287">1 msg/s</tspan> </text> <circle id="push-Oval-3" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="200" cy="151" r="20"/> <circle id="push-Oval-4" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="260" cy="151" r="20"/> <circle id="push-Oval-5" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="320" cy="151" r="20"/> <circle id="push-Oval-6" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="380" cy="150" r="20"/> <circle id="push-Oval-7" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="440" cy="150" r="20"/> <circle id="push-Oval-8" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="500" cy="149" r="20"/> <circle id="push-Oval-9" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="560" cy="149" r="20"/> <circle id="push-Oval-10" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="620" cy="148" r="20"/> <circle id="push-Oval-11" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="680" cy="149" r="20"/> <circle id="push-Oval-12" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="740" cy="151" r="20"/> <rect id="push-Rectangle-1" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" x="820" y="40" width="40" height="220"/> <text id="push-Buffer" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="806" y="27">Buffer</tspan> </text> <rect id="push-Rectangle-2" stroke="#F90505" fill="#FA0303" sketch:type="MSShapeGroup" x="820" y="80" width="40" height="180"/> <g id="push-frontal7-2" sketch:type="MSLayerGroup" transform="translate(882.000000, 91.000000)" fill="#D8D8D8"> <g id="push-Group" sketch:type="MSShapeGroup"> <ellipse id="push-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="push-Shape"/> </g> </g> </g> </g> </symbol><symbol viewBox="0 0 960 300" id="shape-pushpull"><title>pushpull</title><desc>Created with Sketch.</desc> <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->    <g id="pushpull-Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="pushpull-pushpull" sketch:type="MSArtboardGroup"> <g id="pushpull-frontal7" sketch:type="MSLayerGroup" transform="translate(68.000000, 91.000000)" fill="#D8D8D8"> <g id="pushpull-Group" sketch:type="MSShapeGroup"> <ellipse id="pushpull-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="pushpull-Shape"/> </g> </g> <path d="M150,138.5 L810,138.5" id="pushpull-Line" stroke="#979797" stroke-width="5" stroke-linecap="square" sketch:type="MSShapeGroup"/> <path id="pushpull-Line-decoration-1" d="M810,138.5 C806.22,137.45 802.98,136.55 799.2,135.5 C799.2,137.6 799.2,139.4 799.2,141.5 C802.98,140.45 806.22,139.55 810,138.5 C810,138.5 810,138.5 810,138.5 Z" stroke="#979797" stroke-width="5" stroke-linecap="square"/> <path d="M820.5,185 L148.5,185" id="pushpull-Line" stroke="#979797" stroke-width="4" stroke-linecap="square" sketch:type="MSShapeGroup"/> <path id="pushpull-Line-decoration-1" d="M148.5,185 C152.28,186.05 155.52,186.95 159.3,188 C159.3,185.9 159.3,184.1 159.3,182 C155.52,183.05 152.28,183.95 148.5,185 C148.5,185 148.5,185 148.5,185 Z" stroke="#979797" stroke-width="4" stroke-linecap="square"/> <circle id="pushpull-Oval-11" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="260" cy="182" r="20"/> <g id="pushpull-frontal7-2" sketch:type="MSLayerGroup" transform="translate(892.000000, 90.000000)" fill="#D8D8D8"> <g id="pushpull-Group" sketch:type="MSShapeGroup"> <ellipse id="pushpull-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="pushpull-Shape"/> </g> </g> <text id="pushpull-Give-me-100" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#E0E0E0"> <tspan x="205" y="221">Give me 100</tspan> </text> <text id="pushpull-Msg" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#E0E0E0"> <tspan x="600" y="105">Msg</tspan> </text> <circle id="pushpull-Oval-3" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="200" cy="139" r="20"/> <circle id="pushpull-Oval-4" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="260" cy="139" r="20"/> <circle id="pushpull-Oval-5" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="320" cy="139" r="20"/> <circle id="pushpull-Oval-6" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="380" cy="138" r="20"/> <circle id="pushpull-Oval-7" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="440" cy="138" r="20"/> <circle id="pushpull-Oval-8" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="500" cy="137" r="20"/> <circle id="pushpull-Oval-9" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="560" cy="137" r="20"/> <circle id="pushpull-Oval-10" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="620" cy="136" r="20"/> <circle id="pushpull-Oval-13" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="680" cy="137" r="20"/> <circle id="pushpull-Oval-12" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="740" cy="139" r="20"/> <rect id="pushpull-Rectangle-1" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" x="829" y="40" width="40" height="220"/> <text id="pushpull-Buffer" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="820" y="35">Buffer</tspan> </text> <rect id="pushpull-Rectangle-2" stroke="#F90505" fill="#FA0303" sketch:type="MSShapeGroup" x="830" y="219" width="40" height="40"/> </g> </g> </symbol></svg>
+		
+<div class="reveal" >
+<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+	<section>
+		<h1>Akka Streams</h1>
+		<h3 class="fragment" >Présentation au <span id="jean">JHFC Lyon</span></h3> 
+		<div class="fragment">
+			<script type="text/javascript">
+				var animator = {};
+				animator.show = function() {
+					d = document.getElementById("jean");
+					d.innerHTML = "SLUG";
+				};	
+				animator.hide = function() {
+					d = document.getElementById("jean");
+					d.innerHTML = "JHFC Lyon";
+				};
+				animator;
+			</script>	
+        </div>
+	</section>	
+
+	<section>
+		<h1>whois</h1>
+		<h3>frédéric Masion</h3> 
+		<p>github : fmasion</p> 
+		<p>f.masion@kreactive.com</p> 
+	</section>	
+
+	<section>
+		<h1>Agenda</h1>
+		<ul>
+			<li>C'est quoi un stream ?</li> 
+			<li>reactives-streams.org</li> 
+			<li>Akka streams</li>	
+		</ul> 
+	</section>	
+
+	<section>
+		<h1>WTF streams ?</h1>
+		<div class="fragment">
+			<p>Wikipedia (en) dit : </p>
+			<blockquote>
+				sequence of data elements made available over time
+			</blockquote class="fragment">
+			<div class="fragment">
+				<p>"moi" je dit : </p>
+				<blockquote>
+					c'est une sequence d'informations
+					<ul>
+						<li>qui arrivent dans le temps</li>
+						<li>ordonnées (généralement)</li>
+						<li>potentiellement infinie</li>
+					</ul>
+				</blockquote>
+			</div>
+		</div>
+	</section>	
+
+	<section>
+		<h1>WTF streams ?</h1>
+		<p>En scala y en a plein :-(</p> 
+		<ul>
+			<li>scala.collection.immutable.Stream</li> 
+			<li>org.scalaz.stream</li>	
+			<li>play.api.libs.iteratee</li>
+			<li>reactive extention (scala.rx, rx-scala, RxJava...)</li>	
+			<li>org.apache.spark</li>
+			<li>Plein de patterns/paradigmes pouvant les gérer</li>
+			 <ul>
+				<li>Listener, Observer, Observable, Iteratee, Acteurs....</li>
+			</ul>
+		</ul>
+	</section>	
+
+	<section>
+		<h2>Les Streams sont partout</h2>
+		<p>(Si on veut bien les voir)</p> 
+		<ul>
+			<li>IOs en général (déscripteurs de fichiers, sockets...)</li>
+			<li>Timers</li>
+			<li>Evaluation récursive Lazy</li>
+			<li>Actions utilisateurs (Boutons, Inputs...)</li>
+			<li>...</li>
+		</ul>
+		<blockquote>vous êtes familier avec les pipes unix</blockquote>
+	</section>	
+
+	<section>
+		<h2>Deux (grands) types de fonctionnement</h2>
+		<ul>
+			<li>Push</li>
+			<li>Pull</li>
+		</ul>
+	</section>	
+
+	<section>
+		<h2>Push</h2>
+		<p>Pousse les informations aussi vite qu'elles arrivent</p>
+		<svg id="push" width="100%" height="100%" viewBox="0 0 960 300">
+      		<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-push"></use>
+    	</svg>
+	</section>	
+
+	<section>
+		<h2>Push</h2>
+		<ul>
+			<li>Idéal si Publisher plus lent que Subscriber</li>
+			<li>Sinon risque d'OutOfMemory</li>
+			<li>Autres stratégies</li>
+			<ul>
+				<li>Discard message</li>
+				<li>NACK</li>
+				<li>Persiter la queue</li>
+				<li>...</li>
+			</ul>	
+		</ul>
+	</section>	
+
+	<section>
+		<h2>Pull</h2>
+		<p>Demande un élément à la fois</p>
+		<svg id="pull" width="100%" height="100%" viewBox="0 0 960 300">
+      		<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-pull"></use>
+    	</svg>
+	</section>	
+
+	<section>
+		<h2>Pull</h2>
+		<ul>
+			<li>Pas de risque d'OutOfMemory</li>
+			<li>Sous utilisation des ressources</li>
+			<li>Efficace pour taitements couteux</li>
+		</ul>
+	</section>	
+
+	<section>
+		<h2>La Solution :</h2>
+		<div class="fragment">
+			<h2>Le dynamic push-pull</h2>
+			<img class="fragment" src="images/wat.gif">
+		</div>
+	</section>	
+
+	<section>
+		<h2>Dynamic Push - Pull</h2>
+		<p>Demande un packet sur low watermark</p>
+		<p>Pousse les informations aussi vite qu'elles arrivent <br>(dans la limite du nombre de demandes)</p>
+		<svg id="pushpull" width="100%" height="100%" viewBox="0 0 960 300">
+      		<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-pushpull"></use>
+    	</svg>
+	</section>	
+
+	<section>
+		<h2>Dynamic Push - Pull</h2>
+		<ul>
+			<li>Presque aussi efficace que le push</li>
+			<li>Gère le <em>back pressure</em> comme le pull</li>
+			<li>Tunable par le buffer size</li>
+			<ul>
+				<li>Si n = 1 ?</li>
+				<li>Si n = Long.MAX_VALUE ?</li>
+			</ul>	
+		</ul>
+	</section>	
+
+	<section>
+		<h2>reactive-streams.org</h2>
+		<blockquote>
+			Reactive Streams is an initiative to provide a standard for asynchronous stream processing with non-blocking <em style="color:crimson">back pressure</em> on the JVM.
+		</blockquote>
+		<p>Spécification d'interopérabilité</p>
+		<blockquote style="color:crimson">Le back pressure n'a d'intéret QUE si réalisé sur toute la chaine</blockquote>
+	</section>	
+
+	<section>
+		<h2>reactive-streams.org</h2>
+		<p>Seulement 4 interfaces</p>
+		<ul>
+			<li>Publisher</li>
+			<li>Subscriber</li>
+			<li>Subscription</li>
+			<li>Processor</li>
+		</ul>	
+	</section>	
+
+	<section>
+		<h2>reactive-streams.org</h2>
+		<p>Et une MECHANTE EQUIPE</p>
+			<table style="font-size">
+				<tr>
+					<td> 
+						<small>
+						Björn Antonsson – Typesafe Inc.<br>
+						Gavin Bierman – Oracle Inc.<br>
+						Jon Brisbin – Pivotal Software Inc.<br>
+						George Campbell – Netflix, Inc<br>
+						Ben Christensen – Netflix, Inc<br>
+						Mathias Doenitz – spray.io<br>
+						Marius Eriksen – Twitter Inc.<br>
+						Tim Fox – Red Hat Inc.<br>
+						Viktor Klang – Typesafe Inc.<br> 
+						</small>
+					</td>
+					<td> 
+						<small>			
+						Dr. Roland Kuhn – Typesafe Inc.<br>
+						Doug Lea – SUNY Oswego<br>
+						Stephane Maldini – Pivotal Software Inc.<br>
+						Norman Maurer – Red Hat Inc.<br>
+						Erik Meijer – Applied Duality Inc.<br>
+						Todd Montgomery – Kaazing Corp.<br>
+						Patrik Nordwall – Typesafe Inc.<br>
+						Johannes Rudolph – spray.io<br>
+						Endre Varga – Typesafe Inc.<br>
+						</small>
+			 		</td>
+				</tr>
+			</table>
+			<p>Akka, Reactor, Rxjava, RatPack, Vert.x...</p>
+	</section>
+
+	<section>
+		<h2>reactive-streams.org</h2>
+		<p>SPI pour les implémenteurs de bibliothèques</p>
+		<h3>Pas pour les ends users</h3>
+	</section>
+
+	<section>
+		<h2>Akka Streams</h2>
+		<h4>Implémentations de la spécification reactive-streams en akka</h4>
+		
+	</section>
+
+	<section>
+		<h2>Akka Streams level 1</h2>
+		<h4> Concepts de base :</h4>
+		<ul>
+			<li>Source</li>
+			<li>Sink</li>
+			<li>Flow</li>
+			<li>RunnableFlow</li>
+			<li>Materializer</li>
+		</ul>	
+	</section>	
+
+	<section>
+	<h2>Back to code</h2>
+<div>
+    <div>
+        <pre class="scala">
+            <code style="min-width: 800px; min-height: 500px; width: 960px; height: 700px;">object Exemple1 {
+  def main(args: Array[String]): Unit = {
+    implicit val system = ActorSystem("Sys")
+    import system.dispatcher
+
+    implicit val materializer = FlowMaterializer()
+
+    val range = (1 to 10)
+
+    //Scala Stream
+    val result: Int = range.toStream.filter(_ % 2 == 0).fold(0)(_+_)
+    println(result) // =&gt; 30
+
+    //Aka Streams
+    val fResult: Future[Int] = Source(range).filter(_ % 2 == 0).fold(0)(_+_)
+    fResult.onComplete{x =&gt;
+      println(x)  // =&gt; Success(30)
+      system.shutdown()
+    }
+  }
+}</code></pre>
+    </div>
+</div>
+	</section>
+
+	<section>
+		<h2>Décomposons :</h2>
+		<div>
+		<pre class="scala">
+			<code>val fResult: Future[Int] = Source(range).filter(_ % 2 == 0).fold(0)(_+_)</code>
+		</pre>
+		</div>
+		<p> Equivaux à :</p>
+		<div>
+		<pre class="scala">
+			<code>
+    val source: Source[Int] = Source(range)
+    val sink: FoldSink[Int, Int] = Sink.fold[Int, Int](0)(_+_)
+    val flow = Flow[Int].filter(_ % 2 == 0)
+
+    val step1: Source[Int] = source via flow
+    val runnable: RunnableFlow = source via flow to sink
+    val matMap: MaterializedMap = runnable.run()
+    val fResult: Future[Int] = matMap.get(sink)
+			</code>
+		</pre>
+		</div>
+	</section>
+
+	<section>
+		<p> akka.stream.scaladsl</p>
+		<div>
+		<pre class="scala">
+			<code style="min-width: 800px; min-height: 500px; width: 960px; height: 700px;">
+trait FlowOps[+Out] extends scala.AnyRef {
+  type Repr[+O] <: akka.stream.scaladsl.FlowOps[O]
+  def map[T](f : scala.Function1[Out, T]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def mapConcat[T](f : scala.Function1[Out, scala.collection.immutable.Seq[T]]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def mapAsync[T](f : scala.Function1[Out, scala.concurrent.Future[T]]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def mapAsyncUnordered[T](f : scala.Function1[Out, scala.concurrent.Future[T]]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def filter(p : scala.Function1[Out, scala.Boolean]) : FlowOps.this.Repr[Out] = { /* compiled code */ }
+  def collect[T](pf : scala.PartialFunction[Out, T]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def grouped(n : scala.Int) : FlowOps.this.Repr[scala.collection.immutable.Seq[Out]] = { /* compiled code */ }
+  def scan[T](zero : T)(f : scala.Function2[T, Out, T]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def groupedWithin(n : scala.Int, d : scala.concurrent.duration.FiniteDuration) : FlowOps.this.Repr[Out]#Repr[scala.collection.immutable.Seq[Out]] = { /* compiled code */ }
+  def drop(n : scala.Int) : FlowOps.this.Repr[Out] = { /* compiled code */ }
+  def dropWithin(d : scala.concurrent.duration.FiniteDuration) : FlowOps.this.Repr[Out]#Repr[Out] = { /* compiled code */ }
+  def take(n : scala.Int) : FlowOps.this.Repr[Out] = { /* compiled code */ }
+  def takeWithin(d : scala.concurrent.duration.FiniteDuration) : FlowOps.this.Repr[Out]#Repr[Out] = { /* compiled code */ }
+  def conflate[S](seed : scala.Function1[Out, S])(aggregate : scala.Function2[S, Out, S]) : FlowOps.this.Repr[S] = { /* compiled code */ }
+  def expand[S, U](seed : scala.Function1[Out, S])(extrapolate : scala.Function1[S, scala.Tuple2[U, S]]) : FlowOps.this.Repr[U] = { /* compiled code */ }
+  def buffer(size : scala.Int, overflowStrategy : akka.stream.OverflowStrategy) : FlowOps.this.Repr[Out] = { /* compiled code */ }
+  def transform[T](mkStage : scala.Function0[akka.stream.stage.Stage[Out, T]]) : FlowOps.this.Repr[T] = { /* compiled code */ }
+  def prefixAndTail[U >: Out](n : scala.Int) : FlowOps.this.Repr[scala.Tuple2[scala.collection.immutable.Seq[Out], akka.stream.scaladsl.Source[U]]] = { /* compiled code */ }
+  def groupBy[K, U >: Out](f : scala.Function1[Out, K]) : FlowOps.this.Repr[scala.Tuple2[K, akka.stream.scaladsl.Source[U]]] = { /* compiled code */ }
+  def splitWhen[U >: Out](p : scala.Function1[Out, scala.Boolean]) : FlowOps.this.Repr[akka.stream.scaladsl.Source[U]] = { /* compiled code */ }
+  def flatten[U](strategy : akka.stream.FlattenStrategy[Out, U]) : FlowOps.this.Repr[U] = { /* compiled code */ }
+  private[akka] def timerTransform[U](mkStage : scala.Function0[akka.stream.TimerTransformer[Out, U]]) : FlowOps.this.Repr[U] = { /* compiled code */ }
+  private[scaladsl] def withAttributes(attr : akka.stream.scaladsl.OperationAttributes) : FlowOps.this.Repr[Out]
+  private[scaladsl] def andThen[U](op : akka.stream.impl.Ast.AstNode) : FlowOps.this.Repr[U]
+}
+			</code>
+		</pre>
+		</div>
+	</section>
+
+	<section>
+		<h2>Conclusion level 1</h2>
+		<ul>
+			<li>Contrairement à Stream, Source n'est pas une monade</li>
+			<li>Source, Flow, Sink font parti d'un DSL</li>
+			<li>Le DSL crée un AST (RunnableFlow)</li>
+			<li>L'AST est Materialisé sous forme d'acteurs</li>
+			<li>L'AST peut être matérialiser plusieurs fois</li>
+			<li>l'AST pourrait être sérialisé</li>
+			<li>Configurée par les MaterializationSettings</li>
+			<li>Il est possible d'extraire la valeur finale de la Map de Matérialisation</li>
+		</ul>	
+	</section>
+
+	<section>
+		<h2>Akka Streams level 2</h2>
+		<h3> from Flow to Stage </h3>
+		<ul>
+			<li>Chaque opération </li>
+			<ul>
+				<li>map()</li>
+				<li>filter()</li>
+				<li>grouped()</li>
+				<li>...</li>
+			</ul>	
+			<li>est implémenté en "Processing Stage"</li>
+			<li>On met autant de Stage que nécéssaire entre Source et Sink</li>
+			<li>Chaque Stage sera Matérialisé par un acteur</li>
+			<li>mySource.transform(() => new MyCustomStage)</li>
+		</ul>	
+	</section>	
+
+	<section>
+		<h2>Le Stage et le backpressure</h2>
+		<h3> from Flow to Stage </h3>
+		<img src="images/stage_conceptual.png"><br>
+		<em>Pour chaque message qui entre "un message revient"</em>
+	</section>
+
+	<section>
+		<h2>Exemple simple : map()</h2>
+		<img src="images/stage_map.png"><br>
+		<div>
+		<pre class="scala">
+			<code>
+class Map[A, B](f: A => B) extends PushPullStage[A, B] {
+  override def onPush(elem: A, ctx: Context[B]): Directive =
+    ctx.push(f(elem))
+ 
+  override def onPull(ctx: Context[B]): Directive =
+    ctx.pull()
+}
+			</code>
+		</pre>
+		</div>
+	</section>
+
+	<section>
+		<h2>cardinalité != 1 pour 1 : filter()</h2>
+		<img src="images/stage_filter.png"><br>
+		<div>
+		<pre class="scala">
+			<code>
+class Filter[A](p: A => Boolean) extends PushPullStage[A, A] {
+  override def onPush(elem: A, ctx: Context[A]): Directive =
+    if (p(elem)) ctx.push(elem)
+    else ctx.pull()
+ 
+  override def onPull(ctx: Context[A]): Directive =
+    ctx.pull()
+}
+			</code>
+		</pre>
+		</div>
+	</section>
+
+	<section>
+		<h2>Je vous laisse implémenter mapConcat() ?</h2>
+		<img src="images/lama.gif"><br>
+	</section>
+
+	<section>
+		<h2>Conclusion level 2</h2>
+		<h4>Ne jamais casser la boucle de retour ! <strong>sinon dead lock</strong></h4>
+		<ul>
+			<li>Le Stage de base à implémenter est le PushPullStage</li>
+			<li>Le PushStage peut être utilisé pour les 1-1 et n-1 </li>
+			<li>StatefulStage permet d'avoir un état et l'accès à become()</li>
+			<li>D'autres implémentations de base ne sont pas encore documentées</li>
+		</ul>	
+	</section>
+
+	<section>
+		<h2>Akka Streams level 3</h2>
+		<h3> from Flow to Graph </h3>
+		<em>Les Streams en 2D</em>
+	</section>	
+
+	<section>
+		<h2>FlowGraph</h2>
+		<div>
+		<pre class="scala">
+			<code>
+val g = FlowGraph { implicit b =>
+  import FlowGraphImplicits._
+  val in = Source(1 to 10)
+  val out = Sink.ignore
+ 
+  val bcast = Broadcast[Int]
+  val merge = Merge[Int]
+ 
+  val f1, f2, f3, f4 = Flow[Int].map(_ + 10)
+ 
+  in ~> f1 ~> bcast ~> f2 ~> merge ~> f3 ~> out
+              bcast ~> f4 ~> merge
+}
+			</code>
+		</pre>
+		</div>
+		<img src="images/graph.png"><br>
+	</section>	
+
+	<section>
+		<h4>FlowGraph Fan out</strong></h4>
+		<ul>
+			<li>BroadCast => envoie le message à tous les routees</li>
+			<li>Balance => envoie le message à 1 des routees</li>
+			<li>UnZip => split les tuples sur 2 routees</li>
+			<li>FlexiRoute Logique à implémenter soi même</li>
+		</ul>	
+		<h4>FlowGraph Fan in</strong></h4>
+		<ul>
+			<li>Merge => prend aléatoirement sur chaque entrée</li>
+			<li>MergePreferred =>  1 entrée sinon les autres</li>
+			<li>UnZip => split les tuples sur 2 routees</li>
+			<li>ZipWith =>  1 element de chaque entrée (barrière)</li>
+			<li>Zip => inverse de UnZip</li>
+			<li>Concat => 1er Stream puis le 2nd...</li>
+			<li>FlexiMerge => implemente ta MergeStrategy</li>
+		</ul>	
+	</section>
+
+	<section>
+		<h2>FlowGraph Quizz </h2>
+				<div>
+		<pre class="scala">
+			<code>
+val g = FlowGraph { implicit b =>
+  import FlowGraphImplicits._
+  val in = Source(1 to 1000000)
+  val out = Sink.ignore
+ 
+  val bcast = Broadcast[Int]
+  val concat = Concat[Int]
+ 
+  val f1, f2, f3, f4 = Flow[Int].map(_ + 10)
+ 
+  in ~> f1 ~> bcast ~> f2 ~> concat ~> f3 ~> out
+              bcast ~> f4 ~> concat
+}
+			</code>
+		</pre>
+		</div>
+		<em> Ca fait quoi ?</em>
+	</section>
+
+	<section>
+		<h2>Conclusion Level 3 : FlowGraph</h2>
+		<ul>
+			<li>Par défaut pas de cycles</li>
+			<li>b.allowCycles()</li>
+			<li>Attention aux deadLocks</li>
+			<li>Tester avec un "gros" échantillion</li>
+		</ul>
+		<blockquote>Les Flows et FlowGraphs sont réutilisables</blockquote>
+		<blockquote>Ils peuvent être matérialisés plusieurs fois</blockquote>
+		<blockquote>Ils sont composables</blockquote>
+	</section>
+
+	<section>
+		<h2>Akka Streams level 4</h2>
+		<h3> Intégration </h3>
+
+		<ul>
+			<li>Les points d'integration sont les Sources et les Sinks</li>
+			<li>Avec reactives-streams</li>
+			<ul>
+				<li>Source => Publisher</li>
+				<li>Sink => Subscriber</li>
+			</ul>	
+			<li>Avec Akka</li>
+			<ul>
+				<li>Source => ActorProducer[T]</li>
+				<li>Sink => ActorSubscriber</li>
+			</ul>	
+		</ul>
+		<br>
+		<em>That's it</em>
+	</section>	
+
+
+	<section>
+		<h2>Akka Streams What's Next ? post 1.0</h2>
+		<ul>
+			<li>D'autres Materialisers</li>
+			<li>source.map(_+1).map(_*2)......map(_/Math.PI) </li>
+			<li>Une collection de Flows réutilisables</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Conclusion 1/2</h2>
+		<h3>Avantages</h3>
+		<ul>
+			<li>Back Pressure</li>
+			<li>Une API simple et élégantes</li>
+			<li>Une API Typée sur les acteurs</li>
+			<li>Akka Http => Pérénité</li>
+			<li>Flows serialisables ET réutilisables</li>
+			<li>Bientôt des collections de Flow, Source et Sink ?</li>
+			<ul>
+				<li>FileSink, S3Sink, EmailSink, PushNotificationSink..?</li>
+				<li>UTF8_Flow, JsonFlow..?</li>
+			</ul>
+			<li>API FlowGraph surpuissante !</li>
+			<ul>
+				<li>TickSource et Zip</li>
+			</ul>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Conclusion 2/2</h2>
+		<h3>Inconvénients</h3>
+		<ul>
+			<li>API jeunes 1.0M2</li>
+			<li>Donne une "fausse" impréssion de simplicité</li>
+			<li>Risques de DeadLock !</li>
+			<ul>
+				<li>Peut devenir TRES complexe</li>
+				<li>Locks difficile à tester</li>
+				<li>Pas de tolérence pour les pertes de messages</li>
+				<li>Pas de clustering sans gestion du risque</li>
+			</ul>
+			<li>Beaucoup d'indirection entre code et execution</li>
+			<ul>
+				<li>Gestion des erreurs ?</li>
+				<li>StackTrace</li>
+				<li>Locks silencieux</li>
+			</ul>
+		</ul>
+	</section>
+
+	<section>
+		<h1>Questions</h1>
+	</section>
+	
+</div>
+</div>
+
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/snap.svg-min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+	// Full list of configuration options available at:
+	// https://github.com/hakimel/reveal.js#configuration
+	Reveal.initialize({
+		controls: false,
+		progress: true,
+		history: true,
+		center: true,
+
+		transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+		// Optional reveal.js plugins
+		dependencies: [
+			{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+			{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+			{ src: 'plugin/zoom-js/zoom.js', async: true },
+			{ src: 'plugin/notes/notes.js', async: true }
+		]
+	});
+
+	Reveal.addEventListener( 'fragmentshown', function( event ) {
+    	var frag = event.fragment;
+    	var script = frag.getElementsByTagName('script')[0];
+		var toto = eval(script.innerHTML);
+		toto.show();
+	}, false );
+	Reveal.addEventListener( 'fragmenthidden', function( event ) {
+    	var frag = event.fragment;
+    	var script = frag.getElementsByTagName('script')[0];
+		var toto = eval(script.innerHTML);
+		toto.hide();
+	}, false );
+
+</script>
+
+
+	</body>
+</html>

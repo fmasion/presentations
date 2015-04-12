@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+				<title>Présentation Scala-js</title>
+		<meta name="description" content="Présentation Scala-js">
+		<meta name="author" content="Frederic Masion">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<style >
+/*********************************************
+ * More Style
+ *********************************************/
+ </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<svg style="display: none;"><symbol viewBox="0 0 960 300" id="shape-pull"><title>pull</title><desc>Created with Sketch.</desc> <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->    <g id="pull-Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="pull-pull" sketch:type="MSArtboardGroup"> <g id="pull-frontal7" sketch:type="MSLayerGroup" transform="translate(68.000000, 91.000000)" fill="#D8D8D8"> <g id="pull-Group" sketch:type="MSShapeGroup"> <ellipse id="pull-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="pull-Shape"/> </g> </g> <path d="M150,141.5 L810,141.5" id="pull-Line" stroke="#979797" stroke-width="5" stroke-linecap="square" sketch:type="MSShapeGroup"/> <path id="pull-Line-decoration-1" d="M810,141.5 C806.22,140.45 802.98,139.55 799.2,138.5 C799.2,140.6 799.2,142.4 799.2,144.5 C802.98,143.45 806.22,142.55 810,141.5 C810,141.5 810,141.5 810,141.5 Z" stroke="#979797" stroke-width="5" stroke-linecap="square"/> <path d="M820.5,182 L148.5,182" id="pull-Line" stroke="#979797" stroke-width="4" stroke-linecap="square" sketch:type="MSShapeGroup"/> <path id="pull-Line-decoration-1" d="M148.5,182 C152.28,183.05 155.52,183.95 159.3,185 C159.3,182.9 159.3,181.1 159.3,179 C155.52,180.05 152.28,180.95 148.5,182 C148.5,182 148.5,182 148.5,182 Z" stroke="#979797" stroke-width="4" stroke-linecap="square"/> <text id="pull-100-msg/s" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="825" y="265">100 msg/s</tspan> </text> <text id="pull-Capacit&#xE9;-" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="55" y="263">Capacit&#xE9; </tspan> <tspan x="55" y="289">1 msg/s</tspan> </text> <circle id="pull-Oval-10" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="621" cy="141" r="20"/> <circle id="pull-Oval-11" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="260" cy="180" r="20"/> <g id="pull-frontal7-2" sketch:type="MSLayerGroup" transform="translate(835.000000, 89.000000)" fill="#D8D8D8"> <g id="pull-Group" sketch:type="MSShapeGroup"> <ellipse id="pull-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="pull-Shape"/> </g> </g> <text id="pull-Give-me-one" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#E0E0E0"> <tspan x="205" y="221">Give me one</tspan> </text> <text id="pull-Msg" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#E0E0E0"> <tspan x="600" y="105">Msg</tspan> </text> </g> </g> </symbol><symbol viewBox="0 0 960 300" id="shape-push"><title>push</title><desc>Created with Sketch.</desc> <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->    <g id="push-Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="push-push" sketch:type="MSArtboardGroup"> <g id="push-frontal7" sketch:type="MSLayerGroup" transform="translate(68.000000, 91.000000)" fill="#D8D8D8"> <g id="push-Group" sketch:type="MSShapeGroup"> <ellipse id="push-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="push-Shape"/> </g> </g> <path d="M140,151.5 L800,151.5" id="push-Line" stroke="#979797" stroke-width="5" stroke-linecap="square" sketch:type="MSShapeGroup"/> <path id="push-Line-decoration-1" d="M800,151.5 C796.22,150.45 792.98,149.55 789.2,148.5 C789.2,150.6 789.2,152.4 789.2,154.5 C792.98,153.45 796.22,152.55 800,151.5 C800,151.5 800,151.5 800,151.5 Z" stroke="#979797" stroke-width="5" stroke-linecap="square"/> <text id="push-100-msg/s" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="43" y="266">100 msg/s</tspan> </text> <text id="push-Capacit&#xE9;-" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="875" y="261">Capacit&#xE9; </tspan> <tspan x="875" y="287">1 msg/s</tspan> </text> <circle id="push-Oval-3" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="200" cy="151" r="20"/> <circle id="push-Oval-4" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="260" cy="151" r="20"/> <circle id="push-Oval-5" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="320" cy="151" r="20"/> <circle id="push-Oval-6" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="380" cy="150" r="20"/> <circle id="push-Oval-7" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="440" cy="150" r="20"/> <circle id="push-Oval-8" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="500" cy="149" r="20"/> <circle id="push-Oval-9" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="560" cy="149" r="20"/> <circle id="push-Oval-10" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="620" cy="148" r="20"/> <circle id="push-Oval-11" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="680" cy="149" r="20"/> <circle id="push-Oval-12" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="740" cy="151" r="20"/> <rect id="push-Rectangle-1" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" x="820" y="40" width="40" height="220"/> <text id="push-Buffer" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="806" y="27">Buffer</tspan> </text> <rect id="push-Rectangle-2" stroke="#F90505" fill="#FA0303" sketch:type="MSShapeGroup" x="820" y="80" width="40" height="180"/> <g id="push-frontal7-2" sketch:type="MSLayerGroup" transform="translate(882.000000, 91.000000)" fill="#D8D8D8"> <g id="push-Group" sketch:type="MSShapeGroup"> <ellipse id="push-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="push-Shape"/> </g> </g> </g> </g> </symbol><symbol viewBox="0 0 960 300" id="shape-pushpull"><title>pushpull</title><desc>Created with Sketch.</desc> <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->    <g id="pushpull-Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="pushpull-pushpull" sketch:type="MSArtboardGroup"> <g id="pushpull-frontal7" sketch:type="MSLayerGroup" transform="translate(68.000000, 91.000000)" fill="#D8D8D8"> <g id="pushpull-Group" sketch:type="MSShapeGroup"> <ellipse id="pushpull-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="pushpull-Shape"/> </g> </g> <path d="M150,138.5 L810,138.5" id="pushpull-Line" stroke="#979797" stroke-width="5" stroke-linecap="square" sketch:type="MSShapeGroup"/> <path id="pushpull-Line-decoration-1" d="M810,138.5 C806.22,137.45 802.98,136.55 799.2,135.5 C799.2,137.6 799.2,139.4 799.2,141.5 C802.98,140.45 806.22,139.55 810,138.5 C810,138.5 810,138.5 810,138.5 Z" stroke="#979797" stroke-width="5" stroke-linecap="square"/> <path d="M820.5,185 L148.5,185" id="pushpull-Line" stroke="#979797" stroke-width="4" stroke-linecap="square" sketch:type="MSShapeGroup"/> <path id="pushpull-Line-decoration-1" d="M148.5,185 C152.28,186.05 155.52,186.95 159.3,188 C159.3,185.9 159.3,184.1 159.3,182 C155.52,183.05 152.28,183.95 148.5,185 C148.5,185 148.5,185 148.5,185 Z" stroke="#979797" stroke-width="4" stroke-linecap="square"/> <circle id="pushpull-Oval-11" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="260" cy="182" r="20"/> <g id="pushpull-frontal7-2" sketch:type="MSLayerGroup" transform="translate(892.000000, 90.000000)" fill="#D8D8D8"> <g id="pushpull-Group" sketch:type="MSShapeGroup"> <ellipse id="pushpull-Oval" cx="28.223" cy="12.3996562" rx="10.9858125" ry="11.7604531"/> <path d="M32.049875,29.7676563 C29.3125625,29.1727188 26.336375,29.1988125 23.6478125,29.87725 C5.383625,32.1682813 -0.5468125,54.7993906 1.12775,72.0551875 C1.854125,79.5153906 12.8399375,79.5936719 12.10625,72.0551875 C11.496875,65.7665938 11.7576875,56.2762969 14.880125,49.5310625 L14.880125,74.1244219 C14.880125,74.4140625 14.9069375,74.6854375 14.919125,74.9646406 C14.9118125,75.0977188 14.8825625,75.2099219 14.8825625,75.3456094 C14.8825625,94.861125 14.850875,114.368813 14.0976875,133.868672 C13.76375,142.537016 26.3193125,142.503094 26.6508125,133.868672 C27.2406875,118.585563 27.389375,103.294625 27.4235,88.0010781 C28.01825,88.0428281 28.613,88.0428281 29.20775,88.0062969 C29.2443125,103.299844 29.388125,118.590781 29.973125,133.868672 C30.3070625,142.503094 42.862625,142.537016 42.52625,133.868672 C41.7730625,114.368813 41.74625,94.861125 41.74625,75.3456094 C41.74625,74.7402344 41.6706875,74.1896563 41.556125,73.6599531 C41.5390625,65.1873125 41.2368125,56.7068438 41.3294375,48.2394219 C45.0685625,55.0159688 45.4098125,65.3517031 44.7614375,72.0499688 C44.0253125,79.5832344 55.0135625,79.5075625 55.7399375,72.0499688 C57.4535,54.4366875 51.237875,31.2184688 32.049875,29.7676563 L32.049875,29.7676563 Z" id="pushpull-Shape"/> </g> </g> <text id="pushpull-Give-me-100" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#E0E0E0"> <tspan x="205" y="221">Give me 100</tspan> </text> <text id="pushpull-Msg" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#E0E0E0"> <tspan x="600" y="105">Msg</tspan> </text> <circle id="pushpull-Oval-3" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="200" cy="139" r="20"/> <circle id="pushpull-Oval-4" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="260" cy="139" r="20"/> <circle id="pushpull-Oval-5" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="320" cy="139" r="20"/> <circle id="pushpull-Oval-6" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="380" cy="138" r="20"/> <circle id="pushpull-Oval-7" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="440" cy="138" r="20"/> <circle id="pushpull-Oval-8" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="500" cy="137" r="20"/> <circle id="pushpull-Oval-9" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="560" cy="137" r="20"/> <circle id="pushpull-Oval-10" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="620" cy="136" r="20"/> <circle id="pushpull-Oval-13" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="680" cy="137" r="20"/> <circle id="pushpull-Oval-12" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" cx="740" cy="139" r="20"/> <rect id="pushpull-Rectangle-1" stroke="#979797" fill="#D8D8D8" sketch:type="MSShapeGroup" x="829" y="40" width="40" height="220"/> <text id="pushpull-Buffer" sketch:type="MSTextLayer" font-family="Roboto" font-size="20" font-weight="normal" fill="#D8D8D8"> <tspan x="820" y="35">Buffer</tspan> </text> <rect id="pushpull-Rectangle-2" stroke="#F90505" fill="#FA0303" sketch:type="MSShapeGroup" x="830" y="219" width="40" height="40"/> </g> </g> </symbol></svg>
+		
+<div class="reveal" >
+<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+	<section>
+		<h1>Scala-js</h1>
+		<h3 class="fragment" >Présentation au <span>Scala Lyon User Group</span></h3> 
+	</section>	
+
+	<section>
+		<h1>whois</h1>
+		<h3>frédéric Masion</h3> 
+		<p>github : fmasion</p> 
+		<p>f.masion@kreactive.com</p> 
+	</section>	
+
+	<section>
+		<h1>Agenda</h1>
+		<ul>
+			<li>Présentation de Scala-js</li> 
+			<li>Démos</li>
+			<li>Limitations</li>	
+			<li>Conclusion</li>	
+			<li>Q/A</li>	
+			<li>Et après...</li>			
+		</ul> 
+	</section>	
+
+	<section>
+		<h1>...Bières</h1>
+		<img src="images/beer-gif.gif">
+	</section>	
+
+	<section>
+		<h1>Scala-js c'est quoi ?</h1>
+		<blockquote>C'est un compilateur transformant du code scala en javascript</blockquote>
+		<h2 class="fragment">c'est tout !</h2>
+	</section>	
+
+	<section>
+		<h1>Comment çà marche ?</h1>
+		<h2>c'est un plugin du compilateur scala</h2>
+		<ul>
+			<li>Remplace la dernière étape du compilateur</li>
+			<li>=> Génère du js à la place du bytecode</li>
+			<li>Utilise la suite de test du compilateur scala</li>
+			<li>Scala-js a rejoint les projets dbuild</li>
+		</ul>
+	</section>	
+
+	<section>
+		<h1>Conséquences</h1>
+		<h3>Tout scala est supporté</h3>
+		<ul>
+			<li>les classes, objects, traits</li>
+			<li>les imports</li>
+			<li>les implicits</li>
+			<li>les macros !!!</li>
+			<li>...</li>
+		</ul>
+	</section>	
+
+	<section>
+		<h2>Warning</h2>
+		<img src="images/troll-time.jpg">
+
+	</section>	
+
+	<section>
+		<h2>Pourquoi scala-js ?</h2>
+		<h3>Pour avoir un langage "sain" coté front...</h3>
+		<img src="images/good-parts.jpg">
+	</section>	
+
+	<section>
+		<h2>mais en fait...</h2>
+		<img src="images/crockford.jpeg">
+	</section>	
+
+	<section>
+		<h2>Javascript c'est :</h2>
+		<ul>
+			<li>Très accessible... (Stackoverflow copy/paste programming)</li>
+			<li>Mais difficile à faire correctement</li>
+			<li>Difficile à maintenir</li>
+			<li>Beaucoup de TU pour remplacer le travail du compilateur</li>
+			<li>Nécessite des libs pour pouvoir coder correctement (require.js, Backbone, Flux, jSLint...)</li>
+			<li>Pas un langage conçu pour scaler</li>
+		</ul>
+		<blockquote class="fragment">EcmaScript 6 et 7 adressent le Pb</blockquote>
+		<blockquote class="fragment">...JS sera un vrai langage dans 10 ans ?</blockquote>
+	</section>	
+
+	<section>
+		<h2>Mais JS c'est aussi une plateforme !</h2>
+		<ul>
+			<li>Pas limité aux navigateurs</li>
+			<ul>
+				<li>NodeJs, VertX...</li>
+				<li>Scripting dans autre langage</li>
+				<li>Titanium, React Native...</li>
+				<li>Noduino, Nodecopter, IoT...</li>
+			</ul>
+		</ul>
+		<blockquote class="fragment">Bref le JS est partout !</blockquote>
+	</section>	
+
+	<section>
+		<h2>"assembleur du web"</h2>
+		<p><a href="https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS">https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS</a></p>
+		
+		<ul>
+			<li>CoffeScript</li>
+			<li>TypeScript</li>
+			<li>PureScript</li>
+			<li>Clojure</li>
+			<li>GWT</li>
+			<li>Haxe</li>
+			<li>Dart</li>
+			<li>AtScript</li>
+			<li>Elm</li>
+			<li>Asm.js</li>
+			<li>...</li>
+		</ul>
+	</section>	
+
+	<section>
+		<h2>NodeJs => Le Graal ?</h2>
+		<blockquote>NodeJs a plein d'avantages...</blockquote>
+		<ul class="fragment">
+			<li>Même langage en back et en front</li>
+			<ul>
+				<li>DRY</li>
+				<li>Productivité</li>
+			</ul>
+			<li>Async => location transparency</li>
+			<li>Langage connu des devs Web</li>
+			<li>Une grosse communauté</li>
+			<li>Hype</li>
+		</ul>
+		<blockquote class="fragment">Mais c'est du JS :-(</blockquote>
+	</section>	
+
+
+	<section>
+		<h2>Et Scala-js ?</h2>
+		<h3>Ben il génère du js</h3>
+		<p>Tourne partout ou tourne JS</p>
+		<ul>
+			<li>navigateur</li>
+			<li>node</li>
+			<li>plugin chrome</li>
+			<li>Noduino, Nodecopter, IoT...</li>
+		</ul>
+	</section>	
+
+	<section>
+		<h1>Démos</h1>
+		<ul>
+			<li><a href="/scala-js-demos/demo1/helloconsole.html">HelloConsole</a></li>
+			<li>Jouer avec Canvas</li>
+			<li>The big sheet...</li>
+		</ul>
+	</section>
+
+	<section>
+		<h1>Limitations 1/3</h1>
+		<h3>Liées à l'environement d'execution</h3>
+		<p><a href="http://www.scala-js.org/doc/semantics.html">http://www.scala-js.org/doc/semantics.html</a></p>
+		<ul>
+			<li>Nécéssite ES5.1+</li>
+			<li>Pas de Thread</li>
+			<li>Exceptions supp. en fullOpt</li>
+			<li>Mapping de Types Primitifs vers les types JS</li>
+			<li>Pas de Réflexion</li>
+			<li>Regexp</li>
+			<li>Pas de Weak Reference</li>
+		</ul>
+	</section>
+
+	<section>
+		<h1>Limitations 2/3</h1>
+		<h3>Liées au compilateur</h3>
+		<ul>
+			<li>Compile à partir du source ou archives SJS</li>
+			<li>Ne compile pas les sources Java</li>
+			<li>Ne converti pas les Jars</li>
+			<li>Format "binaire" specifique</li>
+			<li>Pas de compatibilité binaire entre version de scala ET de scala-js</li>
+			<li>Taille du js</li>
+		</ul>
+	</section>
+
+	<section>
+		<h1>Limitations 3/3</h1>
+		<h3>Liées à l'écosysteme</h3>
+		<ul>
+			<li>Jeunesse => couche low level</li>
+			<li>Pas encore de framework web idiomatique</li>
+			<li>Des wrappeurs encore buggés</li>
+			<li>Tous les Type de base de la JVM ne sont pas convertis</li>
+			<li>Les librairies compatibles ne publishent pas encore pour SJS...</li>
+			<li>Setup sbt...</li>
+		</ul>
+	</section>
+
+	<section>
+		<h1>Ressources</h1>
+		<ul>
+			<li><a href="http://www.scala-js.org/">http://www.scala-js.org/</a></li>
+			<li><a href="http://lihaoyi.github.io/hands-on-scala-js/#Hands-onScala.js">http://lihaoyi.github.io/hands-on-scala-js/#Hands-onScala.js</a></li>
+			<li><a href="https://github.com/scala-js/scala-js-jquery">https://github.com/scala-js/scala-js-jquery</a></li>
+			<li><a href="https://github.com/lihaoyi/scalatags">https://github.com/lihaoyi/scalatags</a></li>
+			<li><a href="https://github.com/japgolly/scalajs-react">https://github.com/japgolly/scalajs-react</a></li>
+		</ul>
+	</section>
+
+	<section>
+		<h1>Conclusion</h1>
+		<ul>
+			<li>Robuste et bien testé</li>
+			<li>Encore jeune</li>
+			<li>Pas destiné à animer des flocons sur l'écran</li>
+			<li>Justifié pour : </li>
+			<ul>
+				<li>Des gros projets</li>
+				<li>Des projets complexes</li>
+				<li>Developper des libs pour JS</li>
+			</ul>
+			<li>Ressource double compétence scala/front !!</li>
+		</ul>
+	</section>
+
+	<section>
+		<h1>Questions</h1>
+	</section>
+	
+</div>
+</div>
+
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/snap.svg-min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+	// Full list of configuration options available at:
+	// https://github.com/hakimel/reveal.js#configuration
+	Reveal.initialize({
+		controls: false,
+		progress: true,
+		history: true,
+		center: true,
+
+		transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+		// Optional reveal.js plugins
+		dependencies: [
+			{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+			{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+			{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+			{ src: 'plugin/zoom-js/zoom.js', async: true },
+			{ src: 'plugin/notes/notes.js', async: true }
+		]
+	});
+
+	Reveal.addEventListener( 'fragmentshown', function( event ) {
+    	var frag = event.fragment;
+    	var script = frag.getElementsByTagName('script')[0];
+		var toto = eval(script.innerHTML);
+		toto.show();
+	}, false );
+	Reveal.addEventListener( 'fragmenthidden', function( event ) {
+    	var frag = event.fragment;
+    	var script = frag.getElementsByTagName('script')[0];
+		var toto = eval(script.innerHTML);
+		toto.hide();
+	}, false );
+
+</script>
+
+
+	</body>
+</html>

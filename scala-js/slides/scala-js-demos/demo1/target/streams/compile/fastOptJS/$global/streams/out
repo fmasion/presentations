@@ -1,0 +1,17 @@
+[0m[[0minfo[0m] [0mFast optimizing /Users/fred/Developpement/github/Presentations/scala-js/slides/scala-js-demos/demo1/target/scala-2.11/example-fastopt.js[0m
+[0m[[0mdebug[0m] [0mLinker: Read info: 19134 us[0m
+[0m[[0mdebug[0m] [0mLinker: Compute reachability: 32556 us[0m
+[0m[[0mdebug[0m] [0mLinker: Assemble LinkedClasses: 100001 us[0m
+[0m[[0mdebug[0m] [0mLinker: cache stats: reused: 3451 -- invalidated: 1 -- trees read: 1[0m
+[0m[[0mdebug[0m] [0mLinker: 153318 us[0m
+[0m[[0mdebug[0m] [0mInc. optimizer: Batch mode: false[0m
+[0m[[0mdebug[0m] [0mInc. optimizer: Incremental part: 13362 us[0m
+[0m[[0mdebug[0m] [0mInc. optimizer: Optimizing 8 methods.[0m
+[0m[[0mdebug[0m] [0mInc. optimizer: Optimizer part: 10796 us[0m
+[0m[[0mdebug[0m] [0mInc. optimizer: 28245 us[0m
+[0m[[0mdebug[0m] [0mRefiner: Compute reachability: 52597 us[0m
+[0m[[0mdebug[0m] [0mRefiner: Assemble LinkedClasses: 2712 us[0m
+[0m[[0mdebug[0m] [0mRefiner: 55502 us[0m
+[0m[[0mdebug[0m] [0mEmitter: Class tree cache stats: reused: 77 -- invalidated: 1[0m
+[0m[[0mdebug[0m] [0mEmitter: Method tree cache stats: resued: 193 -- invalidated: 6[0m
+[0m[[0mdebug[0m] [0mEmitter (write output): 21605 us[0m
